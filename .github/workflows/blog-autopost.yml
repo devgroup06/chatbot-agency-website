@@ -1,0 +1,77 @@
+name: Auto-Generate Blog Posts (Mistral AI)
+
+on:
+  schedule:
+    # 3 posts per day (UTC): 05:15, 11:15, 17:15
+    - cron: '15 5 * * *'
+    - cron: '15 11 * * *'
+    - cron: '15 17 * * *'
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Number of posts to generate'
+        required: false
+        default: '1'
+
+concurrency:
+  group: blog-autopost
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install dependencies
+        working-directory: website
+        run: npm ci
+
+      - name: Generate blog post(s) with Mistral AI
+        working-directory: website
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+        run: node scripts/generate-blog.mjs --count=${{ github.event.inputs.count || '1' }}
+
+      - name: Commit and push new posts
+        run: |
+          git config user.name "dialoghive-bot"
+          git config user.email "actions@github.com"
+          git add website/content/blog/
+          if git diff --cached --quiet; then
+            echo "No new posts to commit."
+            echo "SKIP_DEPLOY=true" >> "$GITHUB_ENV"
+          else
+            git commit -m "blog: auto-generated post via Mistral AI [skip ci]"
+            git pull --rebase origin ${{ github.ref_name }}
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+
+      # Pushes made with GITHUB_TOKEN don't trigger other workflows,
+      # so this workflow builds and deploys the site itself.
+      - name: Build static site
+        if: env.SKIP_DEPLOY != 'true'
+        working-directory: website
+        run: npm run build
+
+      - name: Deploy to Hostinger via FTP
+        if: env.SKIP_DEPLOY != 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          local-dir: website/out/
+          server-dir: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
+          dangerous-clean-slate: false
