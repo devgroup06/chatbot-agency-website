@@ -25,5 +25,6 @@ npm-debug.log*
 .idea/
 .DS_Store
 
-# Claude Code local state
-.claude/
+# Claude Code local state (keep shared settings.json)
+.claude/*
+!.claude/settings.json

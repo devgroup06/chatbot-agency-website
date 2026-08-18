@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git add -A >/dev/null 2>&1; if ! git diff --cached --quiet 2>/dev/null; then git commit -m \"chore: auto-commit by Claude Code hook\" >/dev/null 2>&1; fi; if git remote get-url origin >/dev/null 2>&1; then git push origin HEAD >/dev/null 2>&1; fi; true",
+            "timeout": 60,
+            "statusMessage": "Auto-committing and pushing changes…"
+          }
+        ]
+      }
+    ]
+  }
+}
