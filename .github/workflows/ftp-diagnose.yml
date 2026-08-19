@@ -1,0 +1,71 @@
+name: Diagnose Hostinger FTP
+
+# The live site returns 403 for every path — including ones that do not exist —
+# which points at the docroot itself rather than any single file. This job lists
+# what is actually on the server, tries to repair permissions, lists again, and
+# commits the transcript to ops/ftp-listing.txt so the result is readable.
+
+on:
+  push:
+    paths:
+      - 'ops/diagnose.trigger'
+      - '.github/workflows/ftp-diagnose.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Inspect, repair permissions, re-inspect
+        env:
+          FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+        run: |
+          mkdir -p ops
+          {
+            echo "===== BEFORE: root listing ====="
+            lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
+              set ftp:ssl-allow true; set ssl:verify-certificate false; set ftp:passive-mode true;
+              pwd; ls -la; bye" 2>&1 || true
+
+            echo "===== BEFORE: about/ and _next/ ====="
+            lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
+              set ftp:ssl-allow true; set ssl:verify-certificate false; set ftp:passive-mode true;
+              ls -la about; ls -la _next; bye" 2>&1 || true
+
+            echo "===== REPAIR: chmod dirs 755 / files 644 ====="
+            lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
+              set ftp:ssl-allow true; set ssl:verify-certificate false; set ftp:passive-mode true;
+              chmod -R 755 .;
+              bye" 2>&1 || true
+
+            echo "===== AFTER: root listing ====="
+            lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
+              set ftp:ssl-allow true; set ssl:verify-certificate false; set ftp:passive-mode true;
+              pwd; ls -la; bye" 2>&1 || true
+          } > ops/ftp-listing.txt
+
+          echo "--- transcript ---"
+          cat ops/ftp-listing.txt
+
+      - name: Commit transcript
+        run: |
+          git config user.name "dialoghive-bot"
+          git config user.email "actions@github.com"
+          git add ops/ftp-listing.txt
+          if git diff --cached --quiet; then
+            echo "no change"
+          else
+            git commit -m "ops: FTP server listing [skip ci]"
+            git pull --rebase origin ${{ github.ref_name }}
+            git push origin HEAD:${{ github.ref_name }}
+          fi
