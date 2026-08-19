@@ -72,3 +72,4 @@ Optional **Actions variable**: `HOSTINGER_SERVER_DIR` — the remote folder to d
 After that, every push deploys automatically, and blog posts publish themselves 3× a day.
 
 <!-- deployed via GitHub Actions -->
+<!-- retry deploy -->
