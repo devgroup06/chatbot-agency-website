@@ -77,12 +77,4 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lftp
-          lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
-            set ftp:ssl-allow true;
-            set ssl:verify-certificate false;
-            set ftp:passive-mode true;
-            set net:max-retries 3;
-            set net:timeout 30;
-            mirror --reverse --parallel=4 --verbose=1 website/out/ $SERVER_DIR;
-            bye
-          "
+          bash scripts/ftp-mirror.sh website/out/ "$SERVER_DIR"
