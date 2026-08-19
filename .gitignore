@@ -31,3 +31,6 @@ npm-debug.log*
 
 # PHP admin secrets (written on the server by install.php)
 admin-php/config.php
+
+# Manual-upload bundle for the admin panel
+admin-panel.zip
