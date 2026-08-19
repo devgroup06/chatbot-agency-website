@@ -73,6 +73,10 @@ jobs:
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           local-dir: website/out/
+          # Next.js gives every build a new build-id folder under _next/, which left
+          # the old sync state pointing at directories that no longer exist (FTP 550).
+          # Tracking state per commit sidesteps that stale-diff failure.
+          state-name: .ftp-deploy-state-v2.json
           # The FTP account logs straight into the demo.dialoghive.com docroot,
           # so files go at the root — not into a public_html/ subfolder.
           server-dir: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
