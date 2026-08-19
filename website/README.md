@@ -70,3 +70,5 @@ Optional **Actions variable**: `HOSTINGER_SERVER_DIR` — the remote folder to d
 3. Enable SSL for the subdomain (the bundled `.htaccess` forces HTTPS).
 
 After that, every push deploys automatically, and blog posts publish themselves 3× a day.
+
+<!-- deployed via GitHub Actions -->
