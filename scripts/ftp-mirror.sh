@@ -12,29 +12,39 @@ set -uo pipefail
 LOCAL_DIR="${1:?local dir required}"
 REMOTE_DIR="${2:?remote dir required}"
 ATTEMPTS="${FTP_ATTEMPTS:-3}"
+LOG="${FTP_LOG:-/tmp/ftp-mirror.log}"
+
+: > "$LOG"
 
 for attempt in $(seq 1 "$ATTEMPTS"); do
   echo "→ mirror attempt $attempt/$ATTEMPTS: $LOCAL_DIR → $REMOTE_DIR"
 
+  # ssl-protect-data is off on purpose: Hostinger accepts an encrypted login but
+  # its data connections drop when TLS is forced on them, which is what kept
+  # failing mid-transfer. Credentials still travel over TLS.
   if lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
       set ftp:ssl-allow true;
+      set ftp:ssl-protect-data false;
+      set ftp:ssl-force false;
       set ssl:verify-certificate false;
       set ftp:passive-mode true;
       set net:max-retries 5;
       set net:timeout 40;
       set net:reconnect-interval-base 5;
-      set mirror:parallel-transfer-count 2;
-      set cmd:fail-exit true;
-      mirror --reverse --continue --verbose=1 '$LOCAL_DIR' '$REMOTE_DIR';
+      set mirror:parallel-transfer-count 1;
+      set xfer:clobber true;
+      mirror --reverse --verbose=1 '$LOCAL_DIR' '$REMOTE_DIR';
       bye
-    "; then
+    " 2>&1 | tee -a "$LOG"; then
     echo "✓ mirror finished"
     exit 0
   fi
 
-  echo "✗ attempt $attempt failed"
+  echo "✗ attempt $attempt failed" | tee -a "$LOG"
   [ "$attempt" -lt "$ATTEMPTS" ] && sleep 20
 done
 
 echo "mirror failed after $ATTEMPTS attempts"
+echo "--- last 40 log lines ---"
+tail -40 "$LOG"
 exit 1
