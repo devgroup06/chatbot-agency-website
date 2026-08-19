@@ -1,25 +1,16 @@
-# DialogHive static site — Apache config for Hostinger
+# DialogHive static site — Apache/LiteSpeed config for Hostinger
+# Kept minimal: the site sits behind Cloudflare, so TLS and redirects are
+# handled there. An origin-side HTTPS redirect would loop.
 ErrorDocument 404 /404.html
 
-# Force HTTPS
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteCond %{HTTPS} off
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
 </IfModule>
 
-# Basic caching for static assets
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
   ExpiresByType image/svg+xml "access plus 1 month"
-  ExpiresByType image/png "access plus 1 month"
-  ExpiresByType image/webp "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
-</IfModule>
-
-# Gzip
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
 </IfModule>
