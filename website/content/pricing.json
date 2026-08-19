@@ -1,0 +1,80 @@
+{
+  "seoTitle": "Pricing — Simple Plans for AI Chatbots",
+  "seoDescription": "DialogHive pricing: transparent monthly plans for AI chatbots on WhatsApp, Instagram, Messenger and your website. Start at $49/month — leads, broadcasts and analytics included.",
+  "heroTitle": "Simple Pricing.",
+  "heroHighlight": "Serious Results.",
+  "plans": [
+    {
+      "name": "Starter",
+      "price": "$49",
+      "period": "/month",
+      "tagline": "For small businesses starting with chat automation",
+      "highlight": false,
+      "features": [
+        "Website chat widget",
+        "1 social channel (WhatsApp or Messenger)",
+        "AI answers trained on your business data",
+        "Lead capture & email alerts",
+        "Client portal access",
+        "Standard support"
+      ]
+    },
+    {
+      "name": "Growth",
+      "price": "$99",
+      "period": "/month",
+      "tagline": "For growing businesses on multiple channels",
+      "highlight": true,
+      "features": [
+        "Everything in Starter",
+        "All 4 channels: WhatsApp, Messenger, Instagram, Website",
+        "Industry-trained bot flows",
+        "WhatsApp broadcasts & reminders",
+        "Order notifications & chat ratings",
+        "Analytics dashboard",
+        "Priority support"
+      ]
+    },
+    {
+      "name": "Scale",
+      "price": "$249",
+      "period": "/month",
+      "tagline": "For high-volume businesses and multi-location brands",
+      "highlight": false,
+      "features": [
+        "Everything in Growth",
+        "Custom automation flows",
+        "Multiple locations / brands",
+        "Human-takeover hybrid mode",
+        "Custom AI persona & advanced training",
+        "Dedicated account manager"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is there a setup fee?",
+      "a": "Standard onboarding is included in every plan — we set up your bot, train it on your business data and connect your channels. Complex custom automation flows may carry a one-time setup fee, quoted upfront."
+    },
+    {
+      "q": "Can I change or cancel my plan anytime?",
+      "a": "Yes. Plans are month-to-month with Stripe billing. Upgrade, downgrade or cancel from your client portal whenever you like — no long-term contracts."
+    },
+    {
+      "q": "Are WhatsApp message costs included?",
+      "a": "Platform usage is included in your plan. WhatsApp/Meta may charge conversation fees on their side depending on your volume and country; we help you estimate these before launch."
+    },
+    {
+      "q": "What counts as a channel?",
+      "a": "Each place your bot talks to customers: WhatsApp, Facebook Messenger, Instagram DM, and your website widget. The Growth plan includes all four."
+    },
+    {
+      "q": "Do you offer custom or agency pricing?",
+      "a": "Yes — for agencies, franchises and multi-location businesses we build custom packages. Contact us with your requirements and we will prepare a quote."
+    },
+    {
+      "q": "Is there a free trial or demo?",
+      "a": "We offer a free live demo with a bot configured for your industry, so you can see exactly how it will talk to your customers before you pay anything."
+    }
+  ]
+}

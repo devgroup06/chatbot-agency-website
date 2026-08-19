@@ -1,0 +1,60 @@
+{
+  "seoTitle": "About Us — The Team Behind Your AI Chatbots",
+  "seoDescription": "DialogHive is an AI chatbot agency helping businesses automate customer conversations on WhatsApp, Instagram, Messenger and the web. Learn about our mission, values and how we work.",
+  "heroTitle": "We Make Businesses",
+  "heroHighlight": "Impossible to Ignore",
+  "heroTitleEnd": "in Chat",
+  "heroSubtitle": "DialogHive was born from a simple observation: customers message businesses everywhere — WhatsApp, Instagram, Messenger, websites — but most businesses can't keep up. We fix that with AI.",
+  "storyTitle": "Our Story",
+  "storyParagraphs": [
+    "We started as engineers building custom chatbots one business at a time. The pattern was always the same: missed messages meant missed revenue. A restaurant losing orders at midnight. A clinic missing appointment requests on Sunday. A store losing a sale because a size question went unanswered for six hours.",
+    "So we built one central AI platform that any business can plug into — with industry-trained bots, multi-channel delivery, and a self-service portal. Today DialogHive powers conversations for restaurants, hospitals, salons, schools, e-commerce stores, real estate agencies, fintechs and workshops."
+  ],
+  "stats": [
+    { "value": "4", "label": "Channels per business" },
+    { "value": "8+", "label": "Industry bot engines" },
+    { "value": "24/7", "label": "Always-on AI answers" },
+    { "value": "1", "label": "Portal for everything" }
+  ],
+  "valuesTitle": "What We Stand For",
+  "values": [
+    {
+      "title": "Customer Conversations First",
+      "desc": "A chatbot is only good if it genuinely helps your customer. Every bot we ship is tested against real customer questions before launch."
+    },
+    {
+      "title": "One Platform, Full Isolation",
+      "desc": "Every client runs on our central platform with strict per-business data isolation — your data is yours, always."
+    },
+    {
+      "title": "AI + Human, Not AI vs Human",
+      "desc": "We design hybrid experiences where AI handles the routine and your team handles the personal. Nobody gets stuck talking to a wall."
+    },
+    {
+      "title": "Measurable Results",
+      "desc": "Leads captured, orders confirmed, ratings collected — everything is tracked so you can see exactly what your bot delivers."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Who is behind DialogHive?",
+      "a": "DialogHive is built by a team of engineers and conversation designers who have shipped chatbots across restaurants, healthcare, e-commerce, education, real estate and fintech. We run one central platform that powers every client bot with full data isolation."
+    },
+    {
+      "q": "What makes DialogHive different from DIY chatbot builders?",
+      "a": "We are an agency, not just a tool. We set up your bot, train it on your business data, connect your channels, and keep improving it — you get results without learning another piece of software."
+    },
+    {
+      "q": "Is my business data safe with DialogHive?",
+      "a": "Yes. Every business lives in its own isolated space on our platform, channel tokens are encrypted, and we support full data deletion on request — including Meta-compliant deletion callbacks."
+    },
+    {
+      "q": "Do you work with businesses outside the listed industries?",
+      "a": "Absolutely. Besides our industry-trained bots, we offer a fully custom AI mode that can be tailored to any business — tell us your use case on the contact page."
+    },
+    {
+      "q": "How do I get started with DialogHive?",
+      "a": "Book a free demo through our contact page. We will show you a working bot for your industry, discuss pricing, and if you like it, get you live within days."
+    }
+  ]
+}

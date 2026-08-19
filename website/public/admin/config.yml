@@ -1,0 +1,206 @@
+# DialogHive CMS — edits commit to GitHub, which triggers the deploy workflow.
+# Paths are relative to the repository root.
+backend:
+  name: github
+  repo: devgroup06/chatbot-agency-website
+  branch: main
+
+media_folder: website/public/uploads
+public_folder: /uploads
+
+site_url: https://demo.dialoghive.com
+display_url: https://demo.dialoghive.com
+logo_url: https://demo.dialoghive.com/logo.svg
+
+collections:
+  # ---------------------------------------------------------------- Blog
+  - name: blog
+    label: Blog Posts
+    label_singular: Blog Post
+    folder: website/content/blog
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    summary: '{{title}} — {{date}}'
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Meta description (for Google), widget: text }
+      - { name: date, label: Date, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { name: tags, label: Tags, widget: list, default: [], required: false }
+      - { name: author, label: Author, widget: string, default: 'DialogHive Team' }
+      - { name: body, label: Post content, widget: markdown }
+
+  # ------------------------------------------------------- Page content
+  - name: pages
+    label: Pages
+    files:
+      - name: home
+        label: Home Page
+        file: website/content/home.json
+        fields:
+          - { name: seoTitle, label: SEO title, widget: string }
+          - { name: seoDescription, label: SEO meta description, widget: text }
+          - { name: badge, label: Hero badge text, widget: string }
+          - { name: heroTitle, label: Hero heading, widget: string }
+          - { name: heroHighlight, label: Hero heading (highlighted words), widget: string }
+          - { name: heroNote, label: Hero small note, widget: string }
+          - { name: channelsTitle, label: Channels section title, widget: string }
+          - name: channels
+            label: Channels
+            widget: list
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: desc, label: Description, widget: text }
+              - { name: href, label: Link, widget: string }
+          - { name: featuresTitle, label: Features section title, widget: string }
+          - name: features
+            label: Features
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: desc, label: Description, widget: text }
+          - { name: stepsTitle, label: Steps section title, widget: string }
+          - name: steps
+            label: Steps
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: desc, label: Description, widget: text }
+          - { name: industriesTitle, label: Industries section title, widget: string }
+          - { name: industries, label: Industries, widget: list }
+          - name: faqs
+            label: FAQs
+            widget: list
+            fields:
+              - { name: q, label: Question, widget: string }
+              - { name: a, label: Answer, widget: text }
+
+      - name: about
+        label: About Page
+        file: website/content/about.json
+        fields:
+          - { name: seoTitle, label: SEO title, widget: string }
+          - { name: seoDescription, label: SEO meta description, widget: text }
+          - { name: heroTitle, label: Hero heading (start), widget: string }
+          - { name: heroHighlight, label: Hero heading (highlighted), widget: string }
+          - { name: heroTitleEnd, label: Hero heading (end), widget: string }
+          - { name: heroSubtitle, label: Hero subtitle, widget: text }
+          - { name: storyTitle, label: Story section title, widget: string }
+          - { name: storyParagraphs, label: Story paragraphs, widget: list }
+          - name: stats
+            label: Stats
+            widget: list
+            fields:
+              - { name: value, label: Value, widget: string }
+              - { name: label, label: Label, widget: string }
+          - { name: valuesTitle, label: Values section title, widget: string }
+          - name: values
+            label: Values
+            widget: list
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: desc, label: Description, widget: text }
+          - name: faqs
+            label: FAQs
+            widget: list
+            fields:
+              - { name: q, label: Question, widget: string }
+              - { name: a, label: Answer, widget: text }
+
+      - name: services
+        label: Services Page
+        file: website/content/services.json
+        fields:
+          - { name: seoTitle, label: SEO title, widget: string }
+          - { name: seoDescription, label: SEO meta description, widget: text }
+          - { name: heroTitle, label: Hero heading (start), widget: string }
+          - { name: heroHighlight, label: Hero heading (highlighted), widget: string }
+          - name: services
+            label: Services
+            widget: list
+            fields:
+              - { name: id, label: Anchor id (e.g. whatsapp), widget: string }
+              - { name: name, label: Service name, widget: string }
+              - { name: desc, label: Description, widget: text }
+              - { name: points, label: Bullet points, widget: list }
+          - name: faqs
+            label: FAQs
+            widget: list
+            fields:
+              - { name: q, label: Question, widget: string }
+              - { name: a, label: Answer, widget: text }
+
+      - name: pricing
+        label: Pricing Page
+        file: website/content/pricing.json
+        fields:
+          - { name: seoTitle, label: SEO title, widget: string }
+          - { name: seoDescription, label: SEO meta description, widget: text }
+          - { name: heroTitle, label: Hero heading (start), widget: string }
+          - { name: heroHighlight, label: Hero heading (highlighted), widget: string }
+          - name: plans
+            label: Plans
+            widget: list
+            fields:
+              - { name: name, label: Plan name, widget: string }
+              - { name: price, label: Price (e.g. $49), widget: string }
+              - { name: period, label: Period (e.g. /month), widget: string }
+              - { name: tagline, label: Tagline, widget: string }
+              - { name: highlight, label: Mark as "Most Popular", widget: boolean, default: false }
+              - { name: features, label: Features, widget: list }
+          - name: faqs
+            label: FAQs
+            widget: list
+            fields:
+              - { name: q, label: Question, widget: string }
+              - { name: a, label: Answer, widget: text }
+
+      - name: contact
+        label: Contact Page
+        file: website/content/contact.json
+        fields:
+          - { name: seoTitle, label: SEO title, widget: string }
+          - { name: seoDescription, label: SEO meta description, widget: text }
+          - { name: heroTitle, label: Hero heading (start), widget: string }
+          - { name: heroHighlight, label: Hero heading (highlighted), widget: string }
+          - { name: formTitle, label: Form section title, widget: string }
+          - { name: formIntro, label: Form intro text, widget: text }
+          - { name: responseTime, label: Response time text, widget: string }
+          - name: faqs
+            label: FAQs
+            widget: list
+            fields:
+              - { name: q, label: Question, widget: string }
+              - { name: a, label: Answer, widget: text }
+
+  # ----------------------------------------------------- Site settings
+  - name: settings
+    label: Site Settings
+    files:
+      - name: general
+        label: Brand & Contact
+        file: website/content/settings.json
+        fields:
+          - { name: name, label: Brand name, widget: string }
+          - { name: tagline, label: Tagline, widget: string }
+          - { name: description, label: Site description (used site-wide + SEO), widget: text }
+          - { name: email, label: Contact email, widget: string }
+          - name: phones
+            label: Phone numbers
+            widget: list
+            fields:
+              - { name: label, label: Country label (e.g. UK), widget: string }
+              - { name: display, label: Shown as (e.g. +44 7348 614469), widget: string }
+              - { name: tel, label: Dial link (no spaces, e.g. +447348614469), widget: string }
+          - name: address
+            label: Office address
+            widget: object
+            fields:
+              - { name: street, label: Street, widget: string }
+              - { name: city, label: City, widget: string }
+              - { name: postalCode, label: Postal code, widget: string }
+              - { name: country, label: Country, widget: string }
+              - { name: countryCode, label: Country code (e.g. GB), widget: string }
+              - { name: full, label: Full address (shown on the site), widget: string }

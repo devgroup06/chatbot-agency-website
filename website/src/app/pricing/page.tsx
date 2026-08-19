@@ -2,86 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import FAQ from '@/components/FAQ';
 import CTA from '@/components/CTA';
+import pricing from '../../../content/pricing.json';
 
 export const metadata: Metadata = {
-  title: 'Pricing — Simple Plans for AI Chatbots',
-  description:
-    'DialogHive pricing: transparent monthly plans for AI chatbots on WhatsApp, Instagram, Messenger and your website. Start at $49/month — leads, broadcasts and analytics included.',
+  title: pricing.seoTitle,
+  description: pricing.seoDescription,
   alternates: { canonical: '/pricing/' },
 };
-
-const plans = [
-  {
-    name: 'Starter',
-    price: '$49',
-    tagline: 'For small businesses starting with chat automation',
-    highlight: false,
-    features: [
-      'Website chat widget',
-      '1 social channel (WhatsApp or Messenger)',
-      'AI answers trained on your business data',
-      'Lead capture & email alerts',
-      'Client portal access',
-      'Standard support',
-    ],
-  },
-  {
-    name: 'Growth',
-    price: '$99',
-    tagline: 'For growing businesses on multiple channels',
-    highlight: true,
-    features: [
-      'Everything in Starter',
-      'All 4 channels: WhatsApp, Messenger, Instagram, Website',
-      'Industry-trained bot flows',
-      'WhatsApp broadcasts & reminders',
-      'Order notifications & chat ratings',
-      'Analytics dashboard',
-      'Priority support',
-    ],
-  },
-  {
-    name: 'Scale',
-    price: '$249',
-    tagline: 'For high-volume businesses and multi-location brands',
-    highlight: false,
-    features: [
-      'Everything in Growth',
-      'Custom automation flows',
-      'Multiple locations / brands',
-      'Human-takeover hybrid mode',
-      'Custom AI persona & advanced training',
-      'Dedicated account manager',
-    ],
-  },
-];
-
-const faqs = [
-  {
-    q: 'Is there a setup fee?',
-    a: 'Standard onboarding is included in every plan — we set up your bot, train it on your business data and connect your channels. Complex custom automation flows may carry a one-time setup fee, quoted upfront.',
-  },
-  {
-    q: 'Can I change or cancel my plan anytime?',
-    a: 'Yes. Plans are month-to-month with Stripe billing. Upgrade, downgrade or cancel from your client portal whenever you like — no long-term contracts.',
-  },
-  {
-    q: 'Are WhatsApp message costs included?',
-    a: 'Platform usage is included in your plan. WhatsApp/Meta may charge conversation fees on their side depending on your volume and country; we help you estimate these before launch.',
-  },
-  {
-    q: 'What counts as a channel?',
-    a: 'Each place your bot talks to customers: WhatsApp, Facebook Messenger, Instagram DM, and your website widget. The Growth plan includes all four.',
-  },
-  {
-    q: 'Do you offer custom or agency pricing?',
-    a: 'Yes — for agencies, franchises and multi-location businesses we build custom packages. Contact us with your requirements and we will prepare a quote.',
-  },
-  {
-    q: 'Is there a free trial or demo?',
-    a: 'We offer a free live demo with a bot configured for your industry, so you can see exactly how it will talk to your customers before you pay anything.',
-  },
-];
 
 export default function PricingPage() {
   return (
@@ -89,7 +16,7 @@ export default function PricingPage() {
       <section className="bg-ink py-20">
         <div className="container-site text-center">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Simple Pricing. <span className="text-brand-500">Serious Results.</span>
+            {pricing.heroTitle} <span className="text-brand-500">{pricing.heroHighlight}</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-300">
             Every plan includes AI answers, lead capture and the client portal. Not sure which fits?{' '}
@@ -103,7 +30,7 @@ export default function PricingPage() {
 
       <section className="container-site py-16">
         <div className="grid gap-8 lg:grid-cols-3">
-          {plans.map((plan) => (
+          {pricing.plans.map((plan) => (
             <div
               key={plan.name}
               className={`relative flex flex-col rounded-2xl border p-8 ${
@@ -121,7 +48,7 @@ export default function PricingPage() {
               <p className="mt-1 text-sm text-slate-500">{plan.tagline}</p>
               <p className="mt-5">
                 <span className="text-4xl font-extrabold text-ink">{plan.price}</span>
-                <span className="text-slate-500">/month</span>
+                <span className="text-slate-500">{plan.period}</span>
               </p>
               <ul className="mt-6 flex-1 space-y-3">
                 {plan.features.map((f) => (
@@ -161,7 +88,7 @@ export default function PricingPage() {
         </p>
       </section>
 
-      <FAQ items={faqs} title="Pricing — FAQs" />
+      <FAQ items={pricing.faqs} title="Pricing — FAQs" />
       <CTA
         title="Not sure which plan fits your business?"
         subtitle="Tell us about your business and we’ll recommend the right setup — with a free live demo."

@@ -35,6 +35,26 @@ npm run dev        # http://localhost:3005
 npm run build      # static export → website/out/
 ```
 
+## Admin Dashboard (`/admin/`)
+
+[Sveltia CMS](https://sveltiacms.app) runs at **https://demo.dialoghive.com/admin/** — a git-based
+editor, so every save is a commit that triggers the deploy workflow (live in ~3 minutes).
+
+**Signing in:** click **Sign In with Token** and paste a GitHub personal access token with `repo`
+scope (the dialog links to GitHub's token page with the scopes preselected). No OAuth app or auth
+proxy is needed for a single editor.
+
+**What is editable:**
+
+| Section | File it writes |
+|---|---|
+| Blog Posts | `content/blog/*.md` |
+| Home / About / Services / Pricing / Contact pages | `content/*.json` |
+| Brand & Contact (name, tagline, email, phones, address) | `content/settings.json` |
+
+Page components import those files directly, so anything in them is CMS-editable; structural bits
+(URL, nav, keywords) stay in `src/lib/site.ts`.
+
 ## Blog Automation (Mistral AI — 3 posts/day)
 
 `scripts/generate-blog.mjs` calls the Mistral chat API and writes a ready-to-publish markdown post (with frontmatter) into `content/blog/`.
