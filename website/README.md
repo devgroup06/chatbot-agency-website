@@ -1,6 +1,6 @@
 # DialogHive Website
 
-Branded marketing website for the AI Chatbot Agency platform, live at **https://demo.dialoghive.com**.
+Branded marketing website for the AI Chatbot Agency platform, live at **https://dialoghive.com**.
 
 Built with **Next.js (App Router) + TypeScript + Tailwind CSS**, exported as a fully static site (`output: 'export'`) and deployed to Hostinger shared hosting via FTP through GitHub Actions.
 
@@ -37,7 +37,7 @@ npm run build      # static export → website/out/
 
 ## Admin Dashboard (`/admin/`)
 
-[Sveltia CMS](https://sveltiacms.app) runs at **https://demo.dialoghive.com/admin/** — a git-based
+[Sveltia CMS](https://sveltiacms.app) runs at **https://dialoghive.com/admin/** — a git-based
 editor, so every save is a commit that triggers the deploy workflow (live in ~3 minutes).
 
 **Signing in:** click **Sign In with Token** and paste a GitHub personal access token with `repo`
@@ -85,11 +85,19 @@ Optional **Actions variable**: `HOSTINGER_SERVER_DIR` — the remote folder to d
 
 ### One-time setup — Hostinger hPanel
 
-1. Add **demo.dialoghive.com** as a subdomain and note its document root (e.g. `public_html/demo`).
-2. Create a dedicated **FTP account** whose root is that document root (then `HOSTINGER_SERVER_DIR` can stay `./`).
-3. Enable SSL for the subdomain (the bundled `.htaccess` forces HTTPS).
+The site is served from the **main domain**, `dialoghive.com`.
+
+1. Create an **FTP account** whose root is the document root of `dialoghive.com`
+   (usually `public_html`), then `HOSTINGER_SERVER_DIR` can stay `./`.
+2. Put that account's host, username and password into the three `HOSTINGER_FTP_*` secrets.
+3. Enable SSL for the domain.
 
 After that, every push deploys automatically, and blog posts publish themselves 3× a day.
 
-<!-- deployed via GitHub Actions -->
-<!-- retry deploy -->
+### Domain map
+
+| Subdomain | What runs there |
+|---|---|
+| `dialoghive.com` | this marketing website (plus `/manage/` admin) |
+| `app.dialoghive.com` | chatbot client app — separate project |
+| `admin.dialoghive.com` | chatbot admin dashboard — separate project |

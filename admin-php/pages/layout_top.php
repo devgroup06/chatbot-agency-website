@@ -16,7 +16,7 @@
     <span class="brand-sub">Admin</span>
   </a>
   <div class="topbar-right">
-    <a class="link" href="https://demo.dialoghive.com/" target="_blank" rel="noopener">View site ↗</a>
+    <a class="link" href="https://dialoghive.com/" target="_blank" rel="noopener">View site ↗</a>
     <span class="who"><?= e($user['name'] ?: $user['email']) ?></span>
     <a class="link" href="index.php?page=logout">Log out</a>
   </div>

@@ -94,7 +94,7 @@ include __DIR__ . '/layout_top.php';
   <div class="form-actions">
     <button type="submit" class="btn">Save &amp; publish</button>
     <?php if (!$isNew): ?>
-      <a class="link" href="https://demo.dialoghive.com/blog/<?= e($slug) ?>/" target="_blank" rel="noopener">View live ↗</a>
+      <a class="link" href="https://dialoghive.com/blog/<?= e($slug) ?>/" target="_blank" rel="noopener">View live ↗</a>
     <?php endif; ?>
   </div>
 </form>

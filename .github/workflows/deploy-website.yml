@@ -39,7 +39,7 @@ jobs:
       # lftp mirrors the whole export. FTP-Deploy-Action kept dying with
       # "550 /_next/<buildId>: No such file or directory" — every Next build renames
       # that folder, and its stored diff went stale and aborted mid-deploy.
-      # The FTP account logs straight into the demo.dialoghive.com docroot.
+      # The FTP account logs straight into the dialoghive.com docroot.
       - name: Deploy to Hostinger via FTP
         env:
           FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}

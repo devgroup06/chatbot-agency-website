@@ -7,7 +7,7 @@ import settings from '../../content/settings.json';
  */
 export const site = {
   ...settings,
-  url: 'https://demo.dialoghive.com',
+  url: 'https://dialoghive.com',
   keywords: [
     'AI chatbot',
     'WhatsApp chatbot',

@@ -79,7 +79,7 @@ async function callMistral(messages) {
 async function generatePost(existing) {
   const topic = TOPIC_POOL[Math.floor(Math.random() * TOPIC_POOL.length)];
 
-  const prompt = `You are the content writer for DialogHive (https://demo.dialoghive.com), an AI chatbot agency that builds chatbots for WhatsApp, Facebook Messenger, Instagram DM and websites, serving industries like restaurants, e-commerce, hospitals, salons, schools, real estate, fintech and car workshops.
+  const prompt = `You are the content writer for DialogHive (https://dialoghive.com), an AI chatbot agency that builds chatbots for WhatsApp, Facebook Messenger, Instagram DM and websites, serving industries like restaurants, e-commerce, hospitals, salons, schools, real estate, fintech and car workshops.
 
 Write ONE original, SEO-optimized blog post on this theme: "${topic}".
 

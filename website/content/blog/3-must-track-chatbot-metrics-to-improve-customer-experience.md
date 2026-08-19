@@ -61,7 +61,7 @@ That’s why **response time** is your most critical chatbot metric.
 #### 2. Automate the Heavy Lifting
 - **Route to human agents** when the bot can’t resolve the issue within 30 seconds.
 - **Set up canned responses** for repetitive questions (e.g., “Where’s my delivery?”).
-- **Use AI to predict intent** before the customer finishes typing. Tools like DialogHive’s chatbots [integrate with NLP](https://demo.dialoghive.com/services/) to anticipate needs.
+- **Use AI to predict intent** before the customer finishes typing. Tools like DialogHive’s chatbots [integrate with NLP](https://dialoghive.com/services/) to anticipate needs.
 
 #### 3. Monitor and Alert
 - Use dashboards to track response times in real time. Set up **Slack/email alerts** if FRT exceeds your benchmark.
@@ -152,7 +152,7 @@ Unlike CSAT, ratings are **unprompted**—customers leave them without being ask
 ### Where to Find Ratings
 
 - **Messaging platforms:** WhatsApp, Facebook Messenger, Instagram DM.
-- **Website chat widgets** (if you use tools like DialogHive’s [chatbot builder](https://demo.dialoghive.com/services/)).
+- **Website chat widgets** (if you use tools like DialogHive’s [chatbot builder](https://dialoghive.com/services/)).
 - **App stores** (for mobile apps with chat support).
 
 ### How to Use Ratings Strategically
@@ -226,4 +226,4 @@ But if you **measure, improve, and act**, your chatbot becomes a **24/7 sales ma
 
 Are you ready to turn your chatbot from a cost center into a revenue driver?
 
-[Talk to our team for a free demo](https://demo.dialoghive.com/contact/)—we’ll show you how to build a chatbot that answers fast, scores high, and keeps customers coming back.
+[Talk to our team for a free demo](https://dialoghive.com/contact/)—we’ll show you how to build a chatbot that answers fast, scores high, and keeps customers coming back.

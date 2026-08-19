@@ -37,7 +37,7 @@ include __DIR__ . '/layout_top.php';
         <tr>
           <td><a href="index.php?page=post&slug=<?= e($slug) ?>"><?= e($slug) ?></a></td>
           <td class="right">
-            <a class="link" href="https://demo.dialoghive.com/blog/<?= e($slug) ?>/" target="_blank" rel="noopener">View ↗</a>
+            <a class="link" href="https://dialoghive.com/blog/<?= e($slug) ?>/" target="_blank" rel="noopener">View ↗</a>
             <a class="link" href="index.php?page=post&slug=<?= e($slug) ?>">Edit</a>
             <form method="post" class="inline" onsubmit="return confirm('Delete this post permanently?');">
               <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">

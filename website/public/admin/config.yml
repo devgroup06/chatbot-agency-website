@@ -8,9 +8,9 @@ backend:
 media_folder: website/public/uploads
 public_folder: /uploads
 
-site_url: https://demo.dialoghive.com
-display_url: https://demo.dialoghive.com
-logo_url: https://demo.dialoghive.com/logo.svg
+site_url: https://dialoghive.com
+display_url: https://dialoghive.com
+logo_url: https://dialoghive.com/logo.svg
 
 collections:
   # ---------------------------------------------------------------- Blog

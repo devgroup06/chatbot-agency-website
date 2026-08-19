@@ -1,7 +1,7 @@
 # DialogHive Admin (PHP)
 
 Password-protected dashboard for editing the website, deployed to
-**https://demo.dialoghive.com/manage/** on Hostinger shared hosting.
+**https://dialoghive.com/manage/** on Hostinger shared hosting.
 
 It does **not** render the public site — that stays a Next.js static export. The panel edits the
 content files in the GitHub repo; the push triggers the existing deploy workflow, so changes are
@@ -25,7 +25,7 @@ adds it to the dashboard.
 ## First-time setup
 
 1. **hPanel → Databases → MySQL Databases** — create a database and user, note the credentials.
-2. Open **https://demo.dialoghive.com/manage/install.php** and fill in:
+2. Open **https://dialoghive.com/manage/install.php** and fill in:
    - the database details
    - your admin name, email and password (this becomes your login)
    - a GitHub token with the `repo` scope, from https://github.com/settings/tokens/new

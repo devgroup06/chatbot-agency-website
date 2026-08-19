@@ -41,7 +41,7 @@ include __DIR__ . '/layout_top.php';
     <p class="page-sub">Change any text below and save — the live site updates in 2–3 minutes.</p>
   </div>
   <?php if ($key !== 'settings'): ?>
-    <a class="link" href="https://demo.dialoghive.com/<?= $key === 'home' ? '' : e($key) . '/' ?>"
+    <a class="link" href="https://dialoghive.com/<?= $key === 'home' ? '' : e($key) . '/' ?>"
        target="_blank" rel="noopener">View page ↗</a>
   <?php endif; ?>
 </div>
