@@ -53,6 +53,9 @@ switch ($page) {
     case 'content':
         include __DIR__ . '/pages/content_edit.php';
         break;
+    case 'publishing':
+        include __DIR__ . '/pages/publishing.php';
+        break;
     case 'account':
         include __DIR__ . '/pages/account.php';
         break;

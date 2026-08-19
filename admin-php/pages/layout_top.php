@@ -33,6 +33,7 @@
     <?php endforeach; ?>
     <p class="side-label">Account</p>
     <a class="<?= $current === 'account' ? 'on' : '' ?>" href="index.php?page=account">Change password</a>
+    <a class="<?= $current === 'publishing' ? 'on' : '' ?>" href="index.php?page=publishing">Publishing<?= gh_configured() ? '' : ' <span class="dot-warn">•</span>' ?></a>
   </nav>
 
   <main class="main">

@@ -59,6 +59,7 @@ updates about 2–3 minutes later.</p>
 
 <div class="status <?= $ghOk ? 'ok' : 'bad' ?>">
   <strong>Publishing:</strong> <?= e($ghMessage) ?>
+  <?php if (!$ghOk): ?><a href="index.php?page=publishing">Set it up →</a><?php endif; ?>
 </div>
 
 <?php include __DIR__ . '/layout_bottom.php'; ?>

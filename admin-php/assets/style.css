@@ -239,3 +239,14 @@ button:hover, .btn:hover { background: #fbbf24; }
   .sidebar { flex: none; width: 100%; min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .main { padding: 1.25rem; }
 }
+
+/* Optional installer step + publishing page */
+.setup-optional { margin-top: .5rem; }
+.setup-optional > summary { list-style: none; cursor: pointer; }
+.setup-optional > summary::-webkit-details-marker { display: none; }
+.setup-optional > summary .setup-head { display: block; margin-bottom: .75rem; }
+.setup-optional > summary .setup-head::after { content: ' ▸'; color: var(--muted, #64748b); }
+.setup-optional[open] > summary .setup-head::after { content: ' ▾'; }
+.btn.danger { background: #fee2e2; color: #991b1b; }
+.btn.danger:hover { background: #fecaca; }
+.dot-warn { color: #d97706; }

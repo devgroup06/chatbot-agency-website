@@ -5,13 +5,36 @@
  * The website is a static Next.js export built from this repository, so the
  * admin panel edits content by committing to GitHub — the push then triggers
  * the deploy workflow. Nothing is written to the web server itself.
+ *
+ * Publishing is optional at install time: until a token is saved the panel
+ * still runs, and every call below reports that it is not connected yet.
  */
 
 require_once __DIR__ . '/db.php';
 
+const GH_NOT_CONNECTED = 'Publishing is not connected yet — add a GitHub token under Account → Publishing.';
+
+/** Publishing settings, with defaults for installs that skipped setup step 3. */
+function gh_config(): array
+{
+    $cfg = config()['github'] ?? [];
+    return [
+        'token'  => (string) ($cfg['token'] ?? ''),
+        'repo'   => (string) ($cfg['repo'] ?? ''),
+        'branch' => (string) ($cfg['branch'] ?? 'main'),
+    ];
+}
+
+/** True once both a token and a repository have been saved. */
+function gh_configured(): bool
+{
+    $cfg = gh_config();
+    return $cfg['token'] !== '' && $cfg['repo'] !== '';
+}
+
 function gh_request(string $method, string $path, ?array $body = null): array
 {
-    $cfg = config()['github'];
+    $cfg = gh_config();
     $url = 'https://api.github.com' . $path;
 
     $ch = curl_init($url);
@@ -49,7 +72,7 @@ function gh_request(string $method, string $path, ?array $body = null): array
 
 function gh_repo_path(string $path): string
 {
-    $cfg = config()['github'];
+    $cfg = gh_config();
     return '/repos/' . $cfg['repo'] . '/contents/' . ltrim($path, '/')
         . '?ref=' . rawurlencode($cfg['branch']);
 }
@@ -57,6 +80,10 @@ function gh_repo_path(string $path): string
 /** Returns ['content' => string, 'sha' => string] or null when missing. */
 function gh_get_file(string $path): ?array
 {
+    if (!gh_configured()) {
+        return null;
+    }
+
     $res = gh_request('GET', gh_repo_path($path));
     if ($res['status'] !== 200 || empty($res['data']['content'])) {
         return null;
@@ -70,6 +97,10 @@ function gh_get_file(string $path): ?array
 /** Lists files in a repository directory. */
 function gh_list_dir(string $path): array
 {
+    if (!gh_configured()) {
+        return [];
+    }
+
     $res = gh_request('GET', gh_repo_path($path));
     if ($res['status'] !== 200 || !is_array($res['data'])) {
         return [];
@@ -80,7 +111,11 @@ function gh_list_dir(string $path): array
 /** Creates or updates a file. Returns [ok, message]. */
 function gh_put_file(string $path, string $content, string $message): array
 {
-    $cfg      = config()['github'];
+    if (!gh_configured()) {
+        return [false, GH_NOT_CONNECTED];
+    }
+
+    $cfg      = gh_config();
     $existing = gh_get_file($path);
 
     $body = [
@@ -104,7 +139,11 @@ function gh_put_file(string $path, string $content, string $message): array
 
 function gh_delete_file(string $path, string $message): array
 {
-    $cfg      = config()['github'];
+    if (!gh_configured()) {
+        return [false, GH_NOT_CONNECTED];
+    }
+
+    $cfg      = gh_config();
     $existing = gh_get_file($path);
     if (!$existing) {
         return [false, 'That file no longer exists.'];
@@ -121,16 +160,43 @@ function gh_delete_file(string $path, string $message): array
         : [false, 'Could not delete: ' . ($res['data']['message'] ?? 'unknown error')];
 }
 
-/** Verifies the stored token can write to the configured repo. */
-function gh_check_access(): array
+/**
+ * Verifies a token can write to a repo. Without arguments it checks whatever
+ * is stored in config.php; the publishing page passes candidates to test them
+ * before saving. Returns [ok, message].
+ */
+function gh_check_access(?string $token = null, ?string $repo = null): array
 {
-    $cfg = config()['github'];
-    $res = gh_request('GET', '/repos/' . $cfg['repo']);
-    if ($res['status'] !== 200) {
-        return [false, 'Cannot reach the repository (HTTP ' . $res['status'] . ').'];
+    if ($token === null && $repo === null) {
+        if (!gh_configured()) {
+            return [false, GH_NOT_CONNECTED];
+        }
+        $cfg   = gh_config();
+        $token = $cfg['token'];
+        $repo  = $cfg['repo'];
     }
-    if (empty($res['data']['permissions']['push'])) {
-        return [false, 'The saved GitHub token cannot write to this repository.'];
+
+    $ch = curl_init('https://api.github.com/repos/' . $repo);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER     => [
+            'Accept: application/vnd.github+json',
+            'Authorization: Bearer ' . $token,
+            'X-GitHub-Api-Version: 2022-11-28',
+            'User-Agent: DialogHive-Admin',
+        ],
+        CURLOPT_TIMEOUT => 20,
+    ]);
+    $raw    = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    $data = json_decode((string) $raw, true);
+
+    if ($status !== 200) {
+        return [false, "GitHub rejected the token (HTTP {$status}). Check the token and repository name."];
     }
-    return [true, 'Connected to ' . $cfg['repo']];
+    if (empty($data['permissions']['push'])) {
+        return [false, 'That token cannot write to the repository. It needs the "repo" scope (classic) or Contents: Read and write (fine-grained).'];
+    }
+    return [true, 'Connected to ' . $repo];
 }

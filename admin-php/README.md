@@ -28,9 +28,13 @@ adds it to the dashboard.
 2. Open **https://dialoghive.com/manage/install.php** and fill in:
    - the database details
    - your admin name, email and password (this becomes your login)
-   - a GitHub token with the `repo` scope, from https://github.com/settings/tokens/new
+   - optionally, step 3 — a GitHub token with the `repo` scope, from https://github.com/settings/tokens/new
 3. Submit. It creates the `admin_users` table, your account, and writes `config.php`.
 4. Delete `install.php` from the server, then log in at `/manage/`.
+
+Step 3 (publishing) is optional and collapsed by default. Skip it and the panel still installs and runs;
+saves just will not reach the live site until you connect it from **Account → Publishing** inside the
+panel, which verifies the token and rewrites `config.php` for you.
 
 `config.php` is written on the server and is intentionally not in git — it holds the database
 password and the GitHub token.
@@ -46,7 +50,7 @@ admin-php/
 │  ├─ auth.php          # sessions, login, CSRF
 │  ├─ github.php        # Contents API read/write
 │  └─ content.php       # frontmatter parsing + recursive form builder
-├─ pages/               # login, dashboard, blog list/edit, content edit, account
+├─ pages/               # login, dashboard, blog list/edit, content edit, account, publishing
 └─ assets/style.css
 ```
 
