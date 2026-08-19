@@ -34,18 +34,25 @@ jobs:
         working-directory: website
         run: npm run build
 
+      # lftp mirrors the whole export. FTP-Deploy-Action kept dying with
+      # "550 /_next/<buildId>: No such file or directory" — every Next build renames
+      # that folder, and its stored diff went stale and aborted mid-deploy.
+      # The FTP account logs straight into the demo.dialoghive.com docroot.
       - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          local-dir: website/out/
-          # Next.js gives every build a new build-id folder under _next/, which left
-          # the old sync state pointing at directories that no longer exist (FTP 550).
-          # Tracking state per commit sidesteps that stale-diff failure.
-          state-name: .ftp-deploy-state-v2.json
-          # The FTP account logs straight into the demo.dialoghive.com docroot,
-          # so files go at the root — not into a public_html/ subfolder.
-          server-dir: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
-          dangerous-clean-slate: false
+        env:
+          FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          SERVER_DIR: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lftp
+          lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
+            set ftp:ssl-allow true;
+            set ssl:verify-certificate false;
+            set ftp:passive-mode true;
+            set net:max-retries 3;
+            set net:timeout 30;
+            mirror --reverse --parallel=4 --verbose=1 website/out/ $SERVER_DIR;
+            bye
+          "
