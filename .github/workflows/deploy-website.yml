@@ -2,11 +2,11 @@ name: Deploy Website to Hostinger
 
 on:
   push:
-    branches: [master, main]
+    branches: [main, master]
     paths:
       - 'website/**'
       - 'admin-php/**'
-      - 'scripts/ftp-mirror.sh'
+      - 'scripts/**'
       - '.github/workflows/deploy-website.yml'
   workflow_dispatch:
 
@@ -18,11 +18,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -36,31 +34,14 @@ jobs:
         working-directory: website
         run: npm run build
 
-      # lftp mirrors the whole export. FTP-Deploy-Action kept dying with
-      # "550 /_next/<buildId>: No such file or directory" — every Next build renames
-      # that folder, and its stored diff went stale and aborted mid-deploy.
-      # The FTP account logs straight into the dialoghive.com docroot.
-      - name: Deploy to Hostinger via FTP
+      # Ships over SSH as a single tar stream. FTP was unusable here: hundreds of
+      # per-file connections kept getting dropped or throttled by the host.
+      - name: Deploy site and admin panel
         env:
-          FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          LFTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          SERVER_DIR: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq lftp
-          bash scripts/ftp-mirror.sh website/out/ "$SERVER_DIR"
-
-      # The PHP admin panel lives beside the static site. config.php is created by
-      # install.php on the server and is not in git, so it survives these uploads.
-      # Runs even when the site step failed, so one flaky transfer cannot skip it.
-      - name: Deploy admin panel to /manage/
-        if: always()
-        env:
-          FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          LFTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          SERVER_DIR: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
-        run: |
-          which lftp >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq lftp; }
-          bash scripts/ftp-mirror.sh admin-php/ "${SERVER_DIR%/}/manage/"
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PASS: ${{ secrets.DEPLOY_PASS }}
+          DEPLOY_DOCROOT: ${{ vars.DEPLOY_DOCROOT || 'domains/dialoghive.com/public_html' }}
+          DEPLOY_SITE_URL: https://dialoghive.com
+        run: bash scripts/deploy.sh --skip-build

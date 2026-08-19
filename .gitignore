@@ -34,3 +34,6 @@ admin-php/config.php
 
 # Manual-upload bundle for the admin panel
 admin-panel.zip
+
+# Deployment credentials — never commit
+.deploy.env
