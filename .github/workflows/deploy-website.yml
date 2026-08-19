@@ -56,3 +56,22 @@ jobs:
             mirror --reverse --parallel=4 --verbose=1 website/out/ $SERVER_DIR;
             bye
           "
+
+      # The PHP admin panel lives beside the static site. config.php is created by
+      # install.php on the server and is not in git, so it survives these uploads.
+      - name: Deploy admin panel to /manage/
+        env:
+          FTP_SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          SERVER_DIR: ${{ vars.HOSTINGER_SERVER_DIR || './' }}
+        run: |
+          lftp --env-password -u "$FTP_USERNAME" "ftp://$FTP_SERVER" -e "
+            set ftp:ssl-allow true;
+            set ssl:verify-certificate false;
+            set ftp:passive-mode true;
+            set net:max-retries 3;
+            set net:timeout 30;
+            mirror --reverse --parallel=2 --verbose=1 admin-php/ ${SERVER_DIR%/}/manage/;
+            bye
+          "

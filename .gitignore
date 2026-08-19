@@ -28,3 +28,6 @@ npm-debug.log*
 # Claude Code local state (keep shared settings.json)
 .claude/*
 !.claude/settings.json
+
+# PHP admin secrets (written on the server by install.php)
+admin-php/config.php

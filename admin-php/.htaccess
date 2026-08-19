@@ -1,0 +1,18 @@
+# Admin panel — keep it out of search engines and protect the config.
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# config.php holds the database password and GitHub token. PHP files are never
+# served as source, but deny it outright in case PHP is ever disabled here.
+<Files "config.php">
+  Require all denied
+</Files>
+
+<FilesMatch "\.(md|json|log)$">
+  Require all denied
+</FilesMatch>
