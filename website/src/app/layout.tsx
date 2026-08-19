@@ -41,6 +41,21 @@ const orgJsonLd = {
   logo: `${site.url}/logo.svg`,
   email: site.email,
   description: site.description,
+  telephone: site.phones.map((p) => p.display),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.countryCode,
+  },
+  contactPoint: site.phones.map((p) => ({
+    '@type': 'ContactPoint',
+    telephone: p.display,
+    contactType: 'customer service',
+    areaServed: p.label,
+    availableLanguage: ['English', 'Urdu'],
+  })),
   sameAs: [],
 };
 

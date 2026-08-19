@@ -73,11 +73,27 @@ export default function ContactPage() {
             </div>
             <div className="flex items-start gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500/15 text-brand-600">
-                🌐
+                📞
               </div>
               <div>
-                <p className="font-semibold text-ink">Website</p>
-                <p className="text-sm text-slate-600">demo.dialoghive.com</p>
+                <p className="font-semibold text-ink">Phone &amp; WhatsApp</p>
+                {site.phones.map((p) => (
+                  <p key={p.tel} className="text-sm text-slate-600">
+                    <span className="font-medium text-slate-500">{p.label}</span>{' '}
+                    <a href={`tel:${p.tel}`} className="text-brand-600 hover:underline">
+                      {p.display}
+                    </a>
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500/15 text-brand-600">
+                📍
+              </div>
+              <div>
+                <p className="font-semibold text-ink">Office</p>
+                <p className="text-sm text-slate-600">{site.address.full}</p>
               </div>
             </div>
             <div className="flex items-start gap-4">

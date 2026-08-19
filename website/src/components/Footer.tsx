@@ -43,11 +43,22 @@ export default function Footer() {
           <p className="mt-4 text-sm leading-relaxed text-slate-400">
             {site.tagline}. One AI assistant for every channel your customers already use.
           </p>
-          <p className="mt-4 text-sm">
-            <a href={`mailto:${site.email}`} className="hover:text-brand-400">
-              {site.email}
-            </a>
-          </p>
+          <address className="mt-4 space-y-1.5 text-sm not-italic text-slate-400">
+            <p>
+              <a href={`mailto:${site.email}`} className="hover:text-brand-400">
+                {site.email}
+              </a>
+            </p>
+            {site.phones.map((p) => (
+              <p key={p.tel}>
+                <span className="text-slate-500">{p.label}</span>{' '}
+                <a href={`tel:${p.tel}`} className="hover:text-brand-400">
+                  {p.display}
+                </a>
+              </p>
+            ))}
+            <p className="pt-1">{site.address.full}</p>
+          </address>
         </div>
 
         {columns.map((col) => (
